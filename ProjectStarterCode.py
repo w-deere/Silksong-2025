@@ -5,11 +5,11 @@ import time
 GPIO.setmode(GPIO.BCM)
 
 # Pin setup
-TRIG = 23
+SENSOR_TRIGGER = 23
 ECHO = 24
 LED = 18
 
-GPIO.setup(TRIG, GPIO.OUT)
+GPIO.setup(SENSOR_TRIGGER, GPIO.OUT)
 GPIO.setup(ECHO, GPIO.IN)
 GPIO.setup(LED, GPIO.OUT)
 
@@ -17,9 +17,9 @@ led_on = False
 
 def get_distance():
     # Trigger pulse
-    GPIO.output(TRIG, True)
+    GPIO.output(SENSOR_TRIGGER, True)
     time.sleep(0.00001)  # 10us pulse
-    GPIO.output(TRIG, False)
+    GPIO.output(SENSOR_TRIGGER, False)
 
     # Wait for echo start
     while GPIO.input(ECHO) == 0:
@@ -39,7 +39,7 @@ def get_distance():
 try:
     while True:
         distance = get_distance()
-        print(f"Distance: {distance:.2f} in")
+        print(f"Distance: {distance} in")
 
         if distance <= 5:
             GPIO.output(LED, True)
@@ -51,5 +51,4 @@ try:
         time.sleep(0.1)
 
 except KeyboardInterrupt:
-    print("Cleaning up...")
     GPIO.cleanup()
